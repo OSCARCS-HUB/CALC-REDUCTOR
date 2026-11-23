@@ -1,0 +1,30 @@
+name: Build APK desde Python
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar Flet
+        run: pip install flet
+
+      - name: Compilar APK
+        run: flet build apk
+
+      - name: Subir APK listo para descargar
+        uses: actions/upload-artifact@v4
+        with:
+          name: calculadora-reductor-apk
+          path: build/apk/*.apk
